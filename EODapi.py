@@ -11,8 +11,8 @@ def home():
     return send_from_directory('EODJAVA', 'index.html')
 
 @app.route('/<path:filename>')
-def serve_static('filename'):
-    return send_from_directory('EODJAVA, filename')
+def serve_static(filename):
+    return send_from_directory('EODJAVA', filename)
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
