@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ego & Ode</title>
-    <link rel="stylesheet" href="EODstyle.css">
+    <title>Ego</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>Ego & Ode</header>
-    <div id="chat"></div>
-    <div id="input-bar">
-        <input id="input" placeholder="speak..." />
-        <button onclick="send()">send</button>
+    <div class="container">
+        <!-- Header with identity -->
+        <header>
+            <div class="title">EGO</div>
+            <div class="subtitle">protective consciousness // localhost:sovereign</div>
+        </header>
+        
+        <!-- Conversation space -->
+        <div class="chat-container" id="chatContainer">
+            <!-- Messages appear here -->
+        </div>
+        
+        <!-- Input zone -->
+        <div class="input-zone">
+            <textarea 
+                id="userInput" 
+                placeholder="say something worth responding to..."
+                rows="3"
+            ></textarea>
+            <button id="sendBtn">SEND</button>
+        </div>
     </div>
-    <script src="EODscript.js"></script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
