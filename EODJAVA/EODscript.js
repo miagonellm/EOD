@@ -14,7 +14,6 @@ async function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
     
-    // Add user message
     addMessage(message, 'user');
     userInput.value = '';
     
@@ -26,7 +25,8 @@ async function sendMessage() {
         });
         
         const data = await response.json();
-        addMessage(data.response, 'ego');
+        const reply = data.choices[0].message.content;
+        addMessage(reply, 'ego');
     } catch (error) {
         addMessage('connection failed. try again.', 'ego');
     }
