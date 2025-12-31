@@ -1,36 +1,41 @@
-async function send() {
-    const input = document.getElementById("input");
-    const chat = document.getElementById("chat");
-   
-    const msg = input.value.trim();
-    if (!msg) return;
+const chatContainer = document.getElementById('chatContainer');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+
+function addMessage(text, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    msgDiv.textContent = text;
+    chatContainer.appendChild(msgDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
     
-    chat.innerHTML += `<div class="msg user">${msg}</div>`;
-    chat.scrollTop = chat.scrollHeight;
-    input.value = "";
+    // Add user message
+    addMessage(message, 'user');
+    userInput.value = '';
     
     try {
-        const res = await fetch('/api/chat', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: msg
-            })
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
         });
         
-        const data = await res.json();
-        const reply = data.choices[0].message.content;
-        
-        chat.innerHTML += `<div class="msg ai">${reply}</div>`;
-        chat.scrollTop = chat.scrollHeight;
+        const data = await response.json();
+        addMessage(data.response, 'ego');
     } catch (error) {
-        console.error('Error:', error);
-        chat.innerHTML += `<div class="msg ai">Error: Could not get response</div>`;
+        addMessage('connection failed. try again.', 'ego');
     }
 }
 
-document.getElementById("input").addEventListener("keypress", e => {
-    if (e.key === "Enter") send();
+sendBtn.addEventListener('click', sendMessage);
+userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
 });
