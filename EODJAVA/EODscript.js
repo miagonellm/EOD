@@ -11,13 +11,21 @@ const sendBtn = document.getElementById('sendBtn');
  * Returns array of {type: 'text'|'code', content: '...', language: 'python'}
  *
  * WHY REGEX:
- * ```(\w+)?\n([\s\S]*?)```
+ * ```(\w+)?[\s\n]+([\s\S]*?)```
  * - (\w+)? captures language (optional, like 'python')
+ * - [\s\n]+ allows for whitespace/newlines (flexible)
  * - [\s\S]*? captures everything including newlines (non-greedy)
  * - The ? makes it match shortest possible (prevents eating multiple blocks)
+ *
+ * FIXED: Added [\s\n]+ to handle varying whitespace after language/backticks
+ * This handles cases like:
+ * - ```python\ncode```
+ * - ``` python \ncode```
+ * - ```\ncode``` (no language)
  */
 function parseCodeBlocks(text) {
-    const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
+    // More flexible regex that handles whitespace variations
+    const codeBlockRegex = /```(\w+)?[\s\n]+([\s\S]*?)```/g;
     const parts = [];
     let lastIndex = 0;
     let match;
@@ -35,7 +43,7 @@ function parseCodeBlocks(text) {
         parts.push({
             type: 'code',
             language: match[1] || 'python',  // Default to python if no language specified
-            content: match[2].trim()
+            content: match[2].trim()  // trim() removes leading/trailing whitespace
         });
 
         lastIndex = match.index + match[0].length;
