@@ -24,13 +24,18 @@ const sendBtn = document.getElementById('sendBtn');
  * - ```\ncode``` (no language)
  */
 function parseCodeBlocks(text) {
-    // More flexible regex that handles whitespace variations
-    const codeBlockRegex = /```(\w+)?[\s\n]+([\s\S]*?)```/g;
+    // Debug: log the raw text to see what we're parsing
+    console.log('Parsing text:', text);
+
+    // More flexible regex: handle optional language, optional whitespace, then newline
+    // Pattern: ```python\ncode``` or ```\ncode``` or ``` python \ncode```
+    const codeBlockRegex = /```(\w+)?\s*\n([\s\S]*?)```/g;
     const parts = [];
     let lastIndex = 0;
     let match;
 
     while ((match = codeBlockRegex.exec(text)) !== null) {
+        console.log('Found code block:', match);
         // Add text before code block
         if (match.index > lastIndex) {
             parts.push({
