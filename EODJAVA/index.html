@@ -8,19 +8,25 @@
     <div class="container">
         <!-- Header with identity -->
         <header>
-            <div class="title">EGO</div>
-            <div class="subtitle">Ego is a Flask-based AI coding companion built to emphasize personality retention, adaptive communication, and technical problem-solving through consistent behavioral patterns. // localhost:sovereign</div>
+            <div class="title-row">
+                <div class="title" id="activePersonaTitle">EGO</div>
+                <div class="persona-toggle">
+                    <button class="persona-btn active" data-persona="ego">EGO</button>
+                    <button class="persona-btn" data-persona="ode">ODE</button>
+                </div>
+            </div>
+            <div class="subtitle" id="activePersonaSubtitle">Ego is a Flask-based AI coding companion built to emphasize personality retention, adaptive communication, and technical problem-solving through consistent behavioral patterns. // localhost:sovereign</div>
         </header>
-        
+
         <!-- Conversation space -->
         <div class="chat-container" id="chatContainer">
             <!-- Messages appear here -->
         </div>
-        
+
         <!-- Input zone -->
         <div class="input-zone">
-            <textarea 
-                id="userInput" 
+            <textarea
+                id="userInput"
                 placeholder="say something worth responding to..."
                 rows="3"
             ></textarea>
