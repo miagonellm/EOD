@@ -27,58 +27,12 @@ header {
     padding-bottom: 1.5rem;
 }
 
-.title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .title {
     font-family: 'Space Mono', monospace;
     font-size: 3rem;
     font-weight: 700;
     color: #ff3366;
     letter-spacing: 0.1em;
-    transition: color 0.3s;
-}
-
-.title.ode-active {
-    color: #6b5bff;
-}
-
-.persona-toggle {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.persona-btn {
-    background: transparent;
-    color: #666;
-    border: 1px solid #333;
-    padding: 0.5rem 1rem;
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    font-size: 0.75rem;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-    letter-spacing: 0.1em;
-}
-
-.persona-btn:hover {
-    border-color: #999;
-    color: #999;
-}
-
-.persona-btn.active {
-    background: #ff3366;
-    color: #0a0a0a;
-    border-color: #ff3366;
-}
-
-.persona-btn.active.ode {
-    background: #6b5bff;
-    border-color: #6b5bff;
 }
 
 .subtitle {
@@ -114,20 +68,6 @@ header {
     color: #e8e8e8;
     padding-left: 1.5rem;
     border-left: 2px solid #ff3366;
-}
-
-.message.ode {
-    color: #e8e8e8;
-    padding-left: 1.5rem;
-    border-left: 2px solid #6b5bff;
-}
-
-header.ode-active {
-    border-bottom: 1px solid #6b5bff;
-}
-
-.chat-container::-webkit-scrollbar-thumb.ode-active {
-    background: #6b5bff;
 }
 
 .input-zone {
