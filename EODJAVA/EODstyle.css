@@ -70,6 +70,98 @@ header {
     border-left: 2px solid #ff3366;
 }
 
+.message-text {
+    margin-bottom: 0.5rem;
+}
+
+/* Code blocks - Shows Ego's technical capability */
+.code-block-container {
+    margin: 1rem 0;
+    background: #0d0d0d;
+    border: 1px solid #333;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+
+.code-language {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: #ff3366;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.code-run-btn,
+.code-copy-btn {
+    background: transparent;
+    border: 1px solid #666;
+    color: #999;
+    padding: 0.25rem 0.75rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-left: 0.5rem;
+    transition: all 0.2s;
+}
+
+.code-run-btn:hover {
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+.code-run-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.code-copy-btn:hover {
+    border-color: #ff3366;
+    color: #ff3366;
+}
+
+.code-block-container pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    background: #0d0d0d;
+}
+
+.code-block-container code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #e8e8e8;
+}
+
+/* Code execution output */
+.code-output {
+    padding: 1rem;
+    background: #060606;
+    border-top: 1px solid #333;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    color: #999;
+}
+
+.output-error {
+    color: #ff3366;
+}
+
+.output-success {
+    color: #00ff88;
+}
+
 .input-zone {
     background: #1a1a1a;
     border: 1px solid #333;

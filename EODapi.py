@@ -1,4 +1,6 @@
 import os
+import subprocess
+import tempfile
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import requests
@@ -114,6 +116,72 @@ def chat_ode():
         ode_memory.store_interaction(user_message, assistant_response)
 
     return jsonify(response_data)
+
+@app.route('/api/execute', methods=['POST'])
+def execute_code():
+    """
+    Execute Python code safely
+
+    SECURITY CONSIDERATIONS:
+    - Uses temporary files (auto-deleted after execution)
+    - 10-second timeout prevents infinite loops
+    - Runs in same environment as server (LOCAL ONLY - don't expose publicly)
+    - No input validation yet (add sandboxing for production)
+
+    HOW IT WORKS:
+    1. Receive code from frontend
+    2. Write to temporary file
+    3. Execute with subprocess (isolated process)
+    4. Capture stdout/stderr
+    5. Return results
+    6. Clean up temp file
+    """
+    data = request.json
+    code = data.get('code', '')
+    language = data.get('language', 'python')
+
+    if language != 'python':
+        return jsonify({'error': 'Only Python execution supported currently'})
+
+    try:
+        # Create temporary file with .py extension
+        # delete=False means we control when it's deleted
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
+            f.write(code)
+            temp_path = f.name
+
+        # Execute with subprocess instead of eval/exec for safety
+        # capture_output=True grabs stdout/stderr
+        # text=True returns strings instead of bytes
+        # timeout=10 kills process after 10 seconds
+        result = subprocess.run(
+            ['python3', temp_path],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+
+        # Clean up temp file
+        os.unlink(temp_path)
+
+        # Non-zero return code means execution failed
+        if result.returncode != 0:
+            return jsonify({
+                'error': result.stderr or 'Execution failed',
+                'output': result.stdout
+            })
+
+        return jsonify({
+            'output': result.stdout,
+            'error': None
+        })
+
+    except subprocess.TimeoutExpired:
+        # Code took longer than 10 seconds
+        os.unlink(temp_path)
+        return jsonify({'error': 'Execution timeout (10s limit)'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 from datetime import datetime
 import os
 import json
+from pattern_library import get_all_patterns
 
 class RAGMemory:
     def __init__(self, persona_name):
@@ -81,18 +82,36 @@ class RAGMemory:
             print(f"Retrieval error: {e}")
             return []
 
-    def build_context_prompt(self, query, n_results=5):
-        """Build a context string to inject into the system prompt"""
+    def build_context_prompt(self, query, n_results=5, include_patterns=True):
+        """
+        Build a context string to inject into the system prompt
+
+        This combines:
+        1. Relevant past conversations (RAG memory)
+        2. Pattern library (meta-knowledge about code/systems thinking)
+
+        For Ego, we include patterns to make him connect technical answers
+        to broader thinking patterns. For Ode, patterns might be different
+        (more philosophical, less action-oriented).
+        """
         context_items = self.retrieve_context(query, n_results)
 
-        if not context_items:
-            return ""
+        context_parts = []
 
-        # Build context string
-        context_parts = ["\n[RELEVANT MEMORY CONTEXT:]"]
-        for item in context_items:
-            context_parts.append(f"{item['text']}")
-        context_parts.append("[END MEMORY CONTEXT]\n")
+        # Add memory context if we have relevant past conversations
+        if context_items:
+            context_parts.append("\n[RELEVANT MEMORY CONTEXT:]")
+            for item in context_items:
+                context_parts.append(f"{item['text']}")
+            context_parts.append("[END MEMORY CONTEXT]\n")
+
+        # Add pattern library for Ego only
+        # This gives Ego the meta-patterns to connect code to thinking
+        if include_patterns and self.persona_name == 'ego':
+            context_parts.append("\n[PATTERN RECOGNITION LIBRARY:]")
+            context_parts.append("Use these patterns to connect technical answers to broader systems thinking:")
+            context_parts.append(get_all_patterns())
+            context_parts.append("[END PATTERNS]\n")
 
         return "\n".join(context_parts)
 
